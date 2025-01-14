@@ -1,0 +1,35 @@
+services:
+  postgres-db:
+    container_name: postgres-db
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432-5432"
+    networks:
+      - "net-api"
+  user-service_api:
+    container_name: user-service_api
+    build: .
+    restart: always
+    environment:
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_PROFILE_ACTIVE: "dev"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+    networks:
+      - net-api
+
+networks:
+  net-api:
+    name: net-api
+    driver: bridge
+
+
