@@ -1,0 +1,45 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  application:
+    name: user-service-api
+  flyway:
+    enable: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    schemas:
+      - user_service_api
+  hateoas:
+    use-hal-as-default-json-media-type: false
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+  management:
+    endpoint:
+      health:
+        show-details: "ALWAYS"
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+    tracing:
+      sampling:
+        probability: 1.0
+      logging:
+        pattern:
+          level: "%5p ${spring.application.name},%X{traceId:-},%X{spanId:-}]"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  springdoc:
+    swagger-ui:
+      path: /api/v1/swagger.html
