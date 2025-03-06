@@ -17,11 +17,11 @@ import static com.alexspohr.user_service.adapters.out.client.WebClientWrapper.ex
 
 @Component
 @Profile("authprovider-google")
-public class GoogleJwlValidator implements JwtValidator {
-    private final Logger logger = LoggerFactory.getLogger(GoogleJwlValidator.class);
+public class GoogleJwtValidator implements JwtValidator {
+    private final Logger logger = LoggerFactory.getLogger(GoogleJwtValidator.class);
     private final WebClient webClient;
 
-    public GoogleJwlValidator(@Qualifier("google") WebClient webClient) {
+    public GoogleJwtValidator(@Qualifier("google") WebClient webClient) {
         this.webClient = webClient;
     }
 

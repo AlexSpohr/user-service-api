@@ -4,6 +4,7 @@ import com.alexspohr.user_service.adapters.in.security.JwtValidator;
 import com.alexspohr.user_service.adapters.in.web.controller.dto.RestErrorResponse;
 import com.alexspohr.user_service.core.domain.exception.ServiceTimeoutException;
 import com.alexspohr.user_service.core.domain.exception.ServiceUnavailableException;
+import com.alexspohr.user_service.core.port.in.VerifyAndPersistUserInputPort;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,13 +28,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     private final RequestMatcher permittedUriRequestMatchers;
     private final ObjectMapper objectMapper;
     private final JwtValidator jwtValidator;
+    private final VerifyAndPersistUserInputPort verifyAndPersistUserInputPort;
 
     public AuthenticationFilter(RequestMatcher permittedUriRequestMatchers,
                                 ObjectMapper objectMapper,
-                                JwtValidator jwtValidator) {
+                                JwtValidator jwtValidator,
+                                VerifyAndPersistUserInputPort verifyAndPersistUserInputPort) {
         this.permittedUriRequestMatchers = permittedUriRequestMatchers;
         this.objectMapper = objectMapper;
         this.jwtValidator = jwtValidator;
+        this.verifyAndPersistUserInputPort = verifyAndPersistUserInputPort;
     }
 
     @Override
@@ -56,7 +60,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(jwtContent.getEmail(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            verifyAndPersistUserInputPort.verifyAndPersistUser(jwtContent);
 
         } catch (RuntimeException ex) {
             response.setStatus(401);
