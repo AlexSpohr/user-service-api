@@ -8,7 +8,7 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     schemas:
-      - user_service_api
+      - user_service
   hateoas:
     use-hal-as-default-json-media-type: false
   jpa:
