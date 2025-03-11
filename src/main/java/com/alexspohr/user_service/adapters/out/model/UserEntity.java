@@ -8,7 +8,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -41,6 +40,9 @@ public class UserEntity {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     String updatedAt;
+
+    public UserEntity() {
+    }
 
     public UserEntity(String id, String name, String email, String createdBy, String createdAt, String updatedBy, String updatedAt) {
         this.id = id;

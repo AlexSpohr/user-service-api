@@ -20,6 +20,10 @@ public class UserPersistenceAdapter implements UserPersistenceOutputPort {
     @Override
     public void VerifyAndPersistUser(UserModel userModel) {
 
+        var existingUser = userEntityRepository.findUserByEmail(userModel.getEmail());
+        if (existingUser.isPresent()) {
+            return;
+        }
         var user = UserMapper.userModelToUserEntity(userModel);
 
         userEntityRepository.save(user);
