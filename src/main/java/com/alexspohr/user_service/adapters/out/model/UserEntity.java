@@ -1,12 +1,13 @@
 package com.alexspohr.user_service.adapters.out.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,40 +18,43 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    private String id;
 
     @Column(nullable = false)
-    String name;
+    private String fullName;
 
     @Column(nullable = false, unique = true)
-    String email;
+    private String email;
 
-    @CreatedBy
-    @Column(updatable = false)
-    String createdBy;
+    @Column(nullable = false)
+    private String givenName;
+
+    @Column(nullable = false)
+    private String familyName;
+
+    private String pictureUrl;
 
     @CreatedDate
     @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    String createdAt;
-
-    @LastModifiedBy
-    String updatedBy;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    String updatedAt;
+    private LocalDateTime updatedAt;
 
     public UserEntity() {
     }
 
-    public UserEntity(String id, String name, String email, String createdBy, String createdAt, String updatedBy, String updatedAt) {
+    public UserEntity(String id, String fullName, String email, String givenName, String familyName,
+                      String pictureUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
+        this.fullName = fullName;
         this.email = email;
-        this.createdBy = createdBy;
+        this.givenName = givenName;
+        this.familyName = familyName;
+        this.pictureUrl = pictureUrl;
         this.createdAt = createdAt;
-        this.updatedBy = updatedBy;
         this.updatedAt = updatedAt;
     }
 
@@ -60,20 +64,21 @@ public class UserEntity {
 
     public static class Builder {
         private String id;
-        private String name;
+        private String fullName;
         private String email;
-        private String createdBy;
-        private String createdAt;
-        private String updatedBy;
-        private String updatedAt;
+        private String givenName;
+        private String familyName;
+        private String pictureUrl;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
 
         public Builder id(String id) {
             this.id = id;
             return this;
         }
 
-        public Builder name(String name) {
-            this.name = name;
+        public Builder fullName(String fullName) {
+            this.fullName = fullName;
             return this;
         }
 
@@ -82,28 +87,33 @@ public class UserEntity {
             return this;
         }
 
-        public Builder createdBy(String createdBy) {
-            this.createdBy = createdBy;
+        public Builder givenName(String givenName) {
+            this.givenName = givenName;
             return this;
         }
 
-        public Builder createdAt(String createdAt) {
+        public Builder familyName(String familyName) {
+            this.familyName = familyName;
+            return this;
+        }
+
+        public Builder pictureUrl(String pictureUrl) {
+            this.pictureUrl = pictureUrl;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        public Builder updatedBy(String updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-
-        public Builder updatedAt(String updatedAt) {
+        public Builder updatedAt(LocalDateTime updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
 
         public UserEntity build() {
-            return new UserEntity(id, name, email, createdBy, createdAt, updatedBy, updatedAt);
+            return new UserEntity(id, fullName, email, givenName, familyName, pictureUrl, createdAt, updatedAt);
         }
     }
 }

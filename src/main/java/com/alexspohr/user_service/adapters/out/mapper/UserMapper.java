@@ -9,8 +9,11 @@ public class UserMapper {
 
     public static UserEntity userModelToUserEntity(UserModel userModel) {
         return UserEntity.builder()
-                .name(userModel.getName())
+                .fullName(userModel.getFullName())
                 .email(userModel.getEmail())
+                .givenName(userModel.getGivenName())
+                .familyName(userModel.getFamilyName())
+                .pictureUrl(userModel.getPictureUrl())
                 .build();
     }
 }

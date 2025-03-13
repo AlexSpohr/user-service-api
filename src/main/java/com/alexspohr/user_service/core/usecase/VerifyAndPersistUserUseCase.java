@@ -17,8 +17,11 @@ public class VerifyAndPersistUserUseCase implements VerifyAndPersistUserInputPor
     public void verifyAndPersistUser(JwtContent jwtContent) {
 
         var user = UserModel.builder()
-                .name(jwtContent.getName())
+                .fullName(jwtContent.getFullName())
                 .email(jwtContent.getEmail())
+                .givenName(jwtContent.getGivenName())
+                .familyName(jwtContent.getFamilyName())
+                .pictureUrl(jwtContent.getPictureUrl())
                 .build();
 
         userPersistenceOutputPort.VerifyAndPersistUser(user);

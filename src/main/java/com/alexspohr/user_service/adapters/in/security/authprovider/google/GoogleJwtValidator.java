@@ -41,7 +41,13 @@ public class GoogleJwtValidator implements JwtValidator {
 
         GoogleResponse response = executeWebClientRequest(request, "google", "google", null);
 
-        var content = new JwtContent(response.name(), response.email());
+        logger.info("Google API Response: " + response);
+
+        var content = new JwtContent(response.email(),
+                response.givenName(),
+                response.familyName(),
+                response.name(),
+                response.picture());
 
         return Optional.of(content);
     }
